@@ -7,11 +7,38 @@ import NavigationBar from './NavigationBar';
 export default class Login extends Component {
   state={
     username:'',
-    password:''
+    password:'',
+    disabled:true
   }
 
   handleClick = () => {
     this.props.history.push('/instructions')
+  }
+
+  handleUserNameInput = (event) => {
+    const name = event.target.name
+    const value = event.target.value
+    this.setState({
+      [name] : value
+    }, this.validationMessage())
+    
+  }
+
+  handlePasswordInput = (event) => {
+    const name = event.target.name
+    const value = event.target.value
+    this.setState({
+      [name] : value
+    }, this.validationMessage())
+  }
+
+
+  validationMessage = () => {
+    if((this.state.username.includes("@") && this.state.username.includes('.') ) && (this.state.username.length >4 && this.state.password.length >6)){
+      this.setState({
+        disabled : false
+      })
+    }
   }
       
   render() {
@@ -24,17 +51,19 @@ export default class Login extends Component {
               <TextField
                 hintText="Enter your Username"
                 floatingLabelText="Username"
-                onChange = {text => this.setState({username:text})}
+                onChange = {(event) => this.handleUserNameInput(event)}
+                name = "username"
               />
               <br/>
               <TextField
                 type="password"
                 hintText="Enter your Password"
                 floatingLabelText="Password"
-                onChange = {text => this.setState({password:text})}
+                onChange = {(event) => this.handlePasswordInput(event)}
+                name = "password"
                 />
               <br/>
-              <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleClick}/>
+              <RaisedButton disabled = {this.state.disabled} label="Submit" primary={true} style={style} onClick={this.handleClick}/>
             </div>
         </div>
         </MuiThemeProvider>
@@ -42,6 +71,7 @@ export default class Login extends Component {
     );
   }
 }
+
 const style = {
   margin: 15,
 };

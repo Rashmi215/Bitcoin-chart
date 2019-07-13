@@ -1,6 +1,7 @@
 import React , { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationBar from './NavigationBar';
+import { Button } from 'reactstrap'
 
 export default class Instructions extends Component {
   
@@ -24,28 +25,25 @@ export default class Instructions extends Component {
         <MuiThemeProvider>
           <NavigationBar title = 'Instuctions'/>
         </MuiThemeProvider>
-        <h5 style = {style.instructionsHeading}>Terms of Service</h5>
-        <div style = {style.instructionsBody}>
-            <ol style = {style.instructionBodyList}>
-              <li style = {style.listItem}>The default price of a bitcoin will be displayed in USD.</li>
-              <li style = {style.listItem}>In order to change the price of a bitcoin in any currency other than USD
+        <h5 style={style.instructionsHeading}>Terms of Service</h5>
+        <div style={style.instructionsBody}>
+            <ol style={style.instructionBodyList}>
+              <li style={style.listItem}>The default price of a bitcoin will be displayed in USD.</li>
+              <li style={style.listItem}>In order to change the price of a bitcoin in any currency other than USD
                 then select your currency from the drop down provided.
               </li>
-              <li style = {style.listItem}>If one clicks on the bitcoin price then another page will be rendered showing the
+              <li style={style.listItem}>If one clicks on the bitcoin price then another page will be rendered showing the
                 trend of bitcoin pricing in last 30 days.
               </li>
             </ol>
-            <div style = {style.noteContainer}>
-              <b style = {style.noteTextOne}>The bitcoin price mapped to the different currencies are near actual but any
-                discrepancy in the price </b>
-              <b style = {style.noteTextTwo}>may be influenced by the market standards.</b>
-            </div>
         </div>
-        <div style = {style.checkBox}>
+        <div style={style.checkBox}>
           <form>
-            <input type = "checkbox" style = {style.checkBox} onChange = {this.handleCheckboxInputChange}/>I agree to the terms and conditions  
-            <br/><br/>
-            <button disabled = {!this.state.checked} style = {style.continueButtonEnabled} onClick={this.clickContinue}>CONTINUE</button>  
+            <input type="checkbox" style={style.checkBox} onChange={this.handleCheckboxInputChange}/>I agree to the terms and conditions  
+            <br/>
+            <Button color="success" style={style.continueButtonEnabled} onClick={this.clickContinue} disabled={!this.state.checked}>
+              CONTINUE
+            </Button>
           </form>
         </div>
       </div>
@@ -68,25 +66,14 @@ const style = {
     marginRight: '1%',
     marginTop: '2%'
   },
-  noteTextOne : {
-    marginTop : '13%',
-    marginLeft : '20%',
-  },
-  noteTextTwo : {
-    marginLeft : '40%'
-  },
   continueButtonEnabled : {
     marginLeft : '45%',
     marginTop : '7%',
-    backgroundColor : 'blue',
+    backgroundColor : '#3D8839',
     text : 'white',
     borderRadius : '8px',
-    border: '2px solid black'
   },
   listItem : {
     lineHeight : '2.5'
   },
-  noteContainer : {
-    width : '80%'
-  }
 }

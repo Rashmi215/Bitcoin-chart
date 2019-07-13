@@ -2,55 +2,31 @@ import React, {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationBar from '../NavigationBar';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import axios from 'axios';
 import {connect} from 'react-redux';
-import {fetchData} from '../../actions/index';
+import {fetchData, fetchEur, fetchGbp} from '../../actions/index';
 
 class Currency extends Component {
   state = {
-    price: '',
     dropdownOpen: false,
-    code: 'USD'
   };
 
   componentDidMount(){
     this.selectUSD();
   }
 
-  selectUSD = () => {
-    // axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-    //   .then(response => {
-    //     let rate = response.data.bpi.USD.rate;
-    //     let symbol = response.data.bpi.USD.code;
-    //     this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
-    //       this.props.history.push('/bitcoin/usd')
-    //     })
-    //   });
-    this.props.fetchData();
+  selectUSD = async () => {
+    await this.props.fetchData();
     this.props.history.push('/bitcoin/usd');
   }
 
-  selectGBP = (e) => {
-    // console.log('e', e.currentTarget.textContent)
-    axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-    .then(response => {
-      let rate = response.data.bpi.GBP.rate;
-      let symbol = response.data.bpi.GBP.code;
-      this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
-        this.props.history.push('/bitcoin/gbp')
-      })
-    });
+  selectGBP = () => {
+    this.props.fetchGbp();
+    this.props.history.push('/bitcoin/gbp');
   }
 
   selectEUR = () => {
-    axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-    .then(response => {
-      let rate = response.data.bpi.EUR.rate;
-      let symbol = response.data.bpi.EUR.code;
-      this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
-        this.props.history.push('/bitcoin/eur')
-      })
-    })
+    this.props.fetchEur();
+    this.props.history.push('/bitcoin/eur');
   }
 
   toggle = () => {
@@ -58,7 +34,7 @@ class Currency extends Component {
   }
 
   displayGraph = () => {
-    this.props.history.push('/bitcoin/analytics',{code: this.state.code});
+    this.props.history.push('/bitcoin/analytics',{code: this.props.currencyState.code});
   }
 
   render() {
@@ -97,7 +73,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) =>{
   return{
-    fetchData: () => {dispatch(fetchData())}
+    fetchData: () => {dispatch(fetchData())},
+    fetchEur: () => {dispatch(fetchEur())},
+    fetchGbp: () => {dispatch(fetchGbp())}
   }
 }
 

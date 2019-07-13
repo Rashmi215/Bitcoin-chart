@@ -27,10 +27,13 @@ export default class Analytics extends Component {
         <MuiThemeProvider>
           <NavigationBar title = 'Analytics'/>
         </MuiThemeProvider>
-        <div>
+        <h5 style={{marginTop: '2%', display: 'flex', justifyContent: 'center'}}>
+          {this.props.location.state.code} Historic Trend
+        </h5>
+        <div style={{marginTop: '1%'}}>
           <BarChart
-            width={1200}
-            height={600}
+            width={1270}
+            height={500}
             data={data}
             margin={{ top: 15, right: 30, left: 20, bottom: 5 }}
           >
