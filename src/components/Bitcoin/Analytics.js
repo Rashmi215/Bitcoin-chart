@@ -10,7 +10,8 @@ export default class Analytics extends Component {
   }
 
   componentDidMount(){
-    axios.get('https://api.coindesk.com/v1/bpi/historical/close.json?currency=GBP')
+    let currencyType = this.props.location.state.code;
+    axios.get(`https://api.coindesk.com/v1/bpi/historical/close.json?currency=${currencyType}`)
       .then(response => {
         let obj = response.data.bpi;
         for (let key in obj){
@@ -18,6 +19,7 @@ export default class Analytics extends Component {
         }
       });
   }
+  
   render(){
     const {data} = this.state;
     return(

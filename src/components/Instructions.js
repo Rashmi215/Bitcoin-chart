@@ -15,7 +15,7 @@ export default class Instructions extends Component {
   }
 
   clickContinue = () => {
-    this.props.history.push('/bitcoin/currency');
+    this.props.history.push('/bitcoin/usd');
   }
 
   render(){

@@ -3,8 +3,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationBar from '../NavigationBar';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import axios from 'axios';
+import {connect} from 'react-redux';
 
-export default class Currency extends Component {
+class Currency extends Component {
   state = {
     price: '',
     dropdownOpen: false,
@@ -18,27 +19,34 @@ export default class Currency extends Component {
   selectUSD = () => {
     axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
       .then(response => {
-        let price = response.data.bpi.USD.rate;
+        let rate = response.data.bpi.USD.rate;
         let symbol = response.data.bpi.USD.code;
-        this.setState({ price: price + ' ' + symbol, code: symbol })
+        this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
+          this.props.history.push('/bitcoin/usd')
+        })
       });
   }
 
-  selectGBP = () => {
+  selectGBP = (e) => {
+    // console.log('e', e.currentTarget.textContent)
     axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
     .then(response => {
-      let price = response.data.bpi.GBP.rate;
+      let rate = response.data.bpi.GBP.rate;
       let symbol = response.data.bpi.GBP.code;
-      this.setState({ price: price + ' ' + symbol, code: symbol })
+      this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
+        this.props.history.push('/bitcoin/gbp')
+      })
     });
   }
 
   selectEUR = () => {
     axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
     .then(response => {
-      let price = response.data.bpi.EUR.rate;
+      let rate = response.data.bpi.EUR.rate;
       let symbol = response.data.bpi.EUR.code;
-      this.setState({ price: price + ' ' + symbol, code: symbol })
+      this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
+        this.props.history.push('/bitcoin/eur')
+      })
     })
   }
 
@@ -47,7 +55,7 @@ export default class Currency extends Component {
   }
 
   displayGraph = () => {
-    this.props.history.push('/bitcoin/analytics')
+    this.props.history.push('/bitcoin/analytics',{code: this.state.code});
   }
 
   render() {
@@ -61,7 +69,7 @@ export default class Currency extends Component {
               </div>
               <div style = {{ display: 'flex', justifyContent: 'center', marginTop: '3%'}}>
                 <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                  <DropdownToggle caret color="success"> Select Currency ({this.state.code}) </DropdownToggle>
+                  <DropdownToggle caret color="success"> Select Currency ({this.props.currencyState.code}) </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem onClick={this.selectUSD}> USD </DropdownItem>
                     <DropdownItem divider />
@@ -77,4 +85,12 @@ export default class Currency extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    currencyState: state.currencyState
+  };
+}
+
+export default connect(mapStateToProps)(Currency);
 
