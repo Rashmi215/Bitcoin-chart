@@ -10,7 +10,8 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          <Route exact path='/login' component={LoginScreen} />
+          <Route path='/login' component={LoginScreen} />
+          <Route exact path='/' component={LoginScreen} />
           <Route path='/bitcoin/analytics' component={Analytics}/>
           <Route path='/bitcoin/:currency' component={Currency}/>
           <Route path='/instructions' component={Instructions}/>
