@@ -4,6 +4,7 @@ import NavigationBar from '../NavigationBar';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import {fetchData} from '../../actions/index';
 
 class Currency extends Component {
   state = {
@@ -17,14 +18,16 @@ class Currency extends Component {
   }
 
   selectUSD = () => {
-    axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then(response => {
-        let rate = response.data.bpi.USD.rate;
-        let symbol = response.data.bpi.USD.code;
-        this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
-          this.props.history.push('/bitcoin/usd')
-        })
-      });
+    // axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+    //   .then(response => {
+    //     let rate = response.data.bpi.USD.rate;
+    //     let symbol = response.data.bpi.USD.code;
+    //     this.setState({ price: rate + ' ' + symbol, code: symbol }, () => {
+    //       this.props.history.push('/bitcoin/usd')
+    //     })
+    //   });
+    this.props.fetchData();
+    this.props.history.push('/bitcoin/usd');
   }
 
   selectGBP = (e) => {
@@ -65,7 +68,7 @@ class Currency extends Component {
             <div>
               <NavigationBar title = 'Bitcoin Pricing'/>
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '3%'}}>
-                <h3>Bitcoin Price: {' '}<span onClick={this.displayGraph} style={{color: 'grey'}}> {this.state.price} </span></h3>
+                <h3>Bitcoin Price: {' '}<span onClick={this.displayGraph} style={{color: 'grey'}}> {this.props.currencyState.price} </span></h3>
               </div>
               <div style = {{ display: 'flex', justifyContent: 'center', marginTop: '3%'}}>
                 <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -92,5 +95,11 @@ const mapStateToProps = state => {
   };
 }
 
-export default connect(mapStateToProps)(Currency);
+const mapDispatchToProps = (dispatch) =>{
+  return{
+    fetchData: () => {dispatch(fetchData())}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Currency);
 
